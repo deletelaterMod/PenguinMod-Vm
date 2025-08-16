@@ -253,7 +253,7 @@ const coreExtensionList = Object.getOwnPropertyNames(defaultBuiltinExtensions);
 
 const preload = [];
 
-if (IsLocal || IsLiveTests) {
+if (IsLiveTests) { /* the SINGLE change this repo was made for. removing IsLocal. */
     preload.push("jgDev");
 }
 
