@@ -20,6 +20,6 @@ jobs:
         run: |
           git remote | grep upstream || git remote add upstream https://github.com/PenguinMod/PenguinMod-Vm.git
           git fetch upstream
-          git checkout main
-          git merge --ff-only upstream/main || echo "No changes to merge"
-          git push origin main
+          git checkout develop
+          git merge --ff-only upstream/develop || echo "No changes to merge"
+          git push origin develop
