@@ -1427,7 +1427,7 @@ class Runtime extends EventEmitter {
         const extIdx = this._blockInfo.findIndex(ext => ext.id === extensionId);
         const info = this._blockInfo[extIdx];
         this._blockInfo.splice(extIdx, 1);
-        this.emit(Runtime.EXTENSION_REMOVED);
+        this.emit(Runtime.EXTENSION_REMOVED, extensionId);
         // cleanup blocks
         for (const target of this.targets) {
             for (const blockId in target.blocks._blocks) {
@@ -1843,6 +1843,19 @@ class Runtime extends EventEmitter {
         }
         if (blockInfo.forceOutputType) {
             blockJSON.output = blockInfo.forceOutputType;
+        }
+
+        const mutationHandler = blockInfo.mutations;
+        if (
+            typeof mutationHandler === 'object' &&
+            typeof mutationHandler.serialize === 'function' &&
+            typeof mutationHandler.deserialize === 'function'
+        ) {
+            blockJSON.mutations = {
+                serialize: mutationHandler.serialize,
+                deserialize: mutationHandler.deserialize,
+                init: typeof mutationHandler.init === 'function' ? mutationHandler.init : undefined
+            };
         }
 
         const mutation = blockInfo.isDynamic
